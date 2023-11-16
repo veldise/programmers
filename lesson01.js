@@ -45,7 +45,7 @@ function solutionOther(num_list) {
  */
 if (require.main === module) {
   // const arr = [12, 4, 15, 1, 14];
-  const arr = require('lodash').range(1, 30);
+  const arr = require("lodash").range(1, 30);
 
   console.log(solution(arr));
   console.log(solution2(arr));

@@ -22,7 +22,7 @@ function calcDuplicates(arr) {
 function solution(/* a, b, c, d */) {
   let args = [...arguments]; // to array
   if (args.length !== 4 && args.some((n) => !(1 <= n && n <= 6 && n % 1 === 0))) {
-    throw new Error('Invalid argumets: ' + args);
+    throw new Error("Invalid argumets: " + args);
   }
 
   const result = calcDuplicates(args);
@@ -59,7 +59,7 @@ function solution(/* a, b, c, d */) {
 function solution2(/* a, b, c, d */) {
   let args = [...arguments]; // to array
   if (args.length !== 4 && args.some((n) => !(1 <= n && n <= 6 && n % 1 === 0))) {
-    throw new Error('Invalid argumets: ' + args);
+    throw new Error("Invalid argumets: " + args);
   }
 
   args = args.sort((a, b) => a - b);
