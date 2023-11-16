@@ -46,17 +46,20 @@ function solution(idList, report, k) {
     throw new Error("Invalid arguments: " + k);
   }
 
+  // 유저별 처리 결과 메일을 받은 횟수
   const mailCounts = Array(idList.length).fill(0);
   const reportInfo = {};
 
   report.forEach((item) => {
     const [reporter, target] = item.split(" ");
     reportInfo[target] = reportInfo[target] || {};
+    // 동일한 유저에 대한 신고 횟수는 1회로 처리
     reportInfo[target][reporter] = true;
   });
 
   for (const reporter of Object.values(reportInfo)) {
     const reporters = Object.keys(reporter);
+    // k번 이상 신고된 경우
     if (reporters.length >= k) {
       for (const reporter of reporters) {
         const idIdx = idList.indexOf(reporter);

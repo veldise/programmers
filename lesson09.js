@@ -1,78 +1,50 @@
 /**
- * https://school.programmers.co.kr/learn/courses/30/lessons/92341
+ * https://school.programmers.co.kr/learn/courses/30/lessons/42587
  */
-// 주차장에 없는 차량이 출차되는 경우
-// 주차장에 이미 있는 차량(차량번호가 같은 차량)이 다시 입차되는 경우
 
-function validFees(fees) {
-  return (
-    fees.length === 4 &&
-    1 <= fees[0] &&
-    fees[0] <= 1439 &&
-    0 <= fees[1] &&
-    fees[1] <= 100000 &&
-    1 <= fees[2] &&
-    fees[2] <= 1439 &&
-    1 <= fees[3] &&
-    fees[3] <= 10000
-  );
+function validPriorities(priorities) {
+  return 1 <= priorities.length && priorities.length <= 100 && priorities.every(validPriority);
 }
-function validRecords(records) {
-  return 1 <= records.length && records.length <= 1000 && records.every(validRecord);
+function validPriority(priority) {
+  return 1 <= priority && priority <= 9;
 }
-function validRecord(record) {
-  return /^([0-1][0-9]|2[0-3]):[0-5][0-9] [0-9]{4} (IN|OUT)$/.test(record);
+function validLocation(location, priorities) {
+  return 0 <= location <= priorities.length - 1;
 }
 
-function time2minute(time) {
-  const [h, m] = time.split(":");
-  return h * 60 + +m;
-}
-
-function solution(fees, records) {
-  if (!validFees(fees)) {
-    throw new Error("Invalid arguments: " + JSON.stringify(fees));
+function solution(priorities, location) {
+  if (!validPriorities(priorities)) {
+    throw new Error("Invalid arguments: " + JSON.stringify(priorities));
   }
-  if (!validRecords(records)) {
-    throw new Error("Invalid arguments: " + JSON.stringify(records));
+  if (!validLocation(location, priorities)) {
+    throw new Error("Invalid arguments: " + JSON.stringify(location));
   }
 
-  // 차량 번호별 기록
-  const recordsByCar = {};
-  records.forEach((record) => {
-    const [time, car, type] = record.split(" ");
-    recordsByCar[car] = recordsByCar[car] || [];
-    recordsByCar[car].push({ time, type });
-  });
+  const targetP = priorities[location];
+  const queue = priorities
+    .map((p, i) => ({ p, i })) // 원래 위치를 저장
+    .filter((item) => item.p >= targetP); // 더 낮은 우선 순위는 처리 불필요
 
-  // 기본 시간(분), 기본 요금(원), 단위 시간(분), 단위 요금(원)
-  const [minuteDefault, feeDefault, unit, feeByUnit] = fees;
-  // 차량 번호별 주차 요금
-  const feeByCar = {};
+  let answer = 0;
 
-  for (const [car, records] of Object.entries(recordsByCar)) {
-    // 입차된 후에 출차된 내역이 없다면, 23:59에 출차된 것으로 간주
-    if (records[records.length - 1].type === "IN") {
-      records.push({ time: "23:59", type: "OUT" });
-    }
+  while (queue.length) {
+    // 큐에서 프로세스 꺼내기
+    const curr = queue.shift();
 
-    // OUT time - IN time
-    let sumMinute = 0;
-    for (let i = 0; i < records.length; i += 2) {
-      sumMinute += time2minute(records[i + 1].time) - time2minute(records[i].time);
-    }
-
-    // 기본 요금 + 단위 요금
-    feeByCar[car] = feeDefault;
-    if (sumMinute > minuteDefault) {
-      feeByCar[car] += Math.ceil((sumMinute - minuteDefault) / unit) * feeByUnit;
+    if (queue.find((item) => item.p > curr.p)) {
+      // 큐에 우선순위가 더 높은 프로세스가 있으면 다시 큐에 넣기
+      queue.push(curr);
+    } else {
+      // 실행
+      answer++;
+      // 실행한 프로세스의 초기 위치와 지정한 위치(location)이 같으면 중단
+      if (curr.i === location) {
+        break;
+      }
     }
   }
 
-  // 차량 번호가 작은 자동차부터 차례대로 배열로
-  return Object.keys(feeByCar)
-    .sort()
-    .map((car) => feeByCar[car]);
+  return answer;
 }
 
 function solutionOther(args) {
@@ -84,32 +56,21 @@ function solutionOther(args) {
  */
 if (require.main === module) {
   const testCases = [
-    {
-      fees: [180, 5000, 10, 600],
-      records: [
-        "05:34 5961 IN",
-        "06:00 0000 IN",
-        "06:34 0000 OUT",
-        "07:59 5961 OUT",
-        "07:59 0148 IN",
-        "18:59 0000 IN",
-        "19:09 0148 OUT",
-        "22:59 5961 IN",
-        "23:00 5961 OUT"
-      ],
-      result: [14600, 34400, 5000]
-    },
-    {
-      fees: [120, 0, 60, 591],
-      records: ["16:00 3961 IN", "16:00 0202 IN", "18:00 3961 OUT", "18:00 0202 OUT", "23:58 3961 IN"],
-      result: [0, 591]
-    },
-    { fees: [1, 461, 1, 10], records: ["00:00 1234 IN"], result: [14841] }
+    { priorities: [2, 1, 3, 2], location: 2, result: 1 },
+    { priorities: [1, 1, 9, 1, 1, 1], location: 0, result: 5 },
+    { priorities: [1, 1, 9, 1, 1, 1], location: 1, result: 6 },
+    { priorities: [1, 1, 2, 7, 4, 1, 1], location: 0, result: 6 },
+    { priorities: [1, 1, 2, 7, 4, 1, 1], location: 1, result: 7 },
+    { priorities: [1, 1, 2, 7, 4, 1, 1], location: 2, result: 3 },
+    { priorities: [1, 1, 2, 7, 4, 1, 1], location: 3, result: 1 },
+    { priorities: [1, 4, 9, 9, 3, 5, 8, 9, 3], location: 4, result: 7 },
+    { priorities: [1, 4, 9, 9, 3, 5, 8, 9, 3], location: 3, result: 2 },
+    { priorities: [1, 4, 9, 9, 3, 5, 8, 9, 3], location: 8, result: 8 }
   ];
 
   const success = testCases.every((item) => {
-    console.log(solution(item.fees, item.records), item.result);
-    return require("lodash").isEqual(solution(item.fees, item.records), item.result);
+    console.log(solution(item.priorities, item.location), item.result);
+    return require("lodash").isEqual(solution(item.priorities, item.location), item.result);
   });
   console.log(success);
 }

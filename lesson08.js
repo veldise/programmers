@@ -14,31 +14,14 @@ function solution(numbers) {
 
   for (let i = 0; i < length - 1; i++) {
     for (let j = i + 1; j < length; j++) {
-      rst.push(numbers[i] + numbers[j]);
-    }
-  }
-
-  return [...new Set(rst)].sort((a, b) => a - b);
-}
-
-function solution2(numbers) {
-  if (!(2 <= numbers.length && numbers.length <= 100 && numbers.every((n) => 0 <= n && n <= 100))) {
-    throw new Error("Invalid arguments: " + JSON.stringify(numbers));
-  }
-
-  const rst = [];
-  const length = numbers.length;
-
-  for (let i = 0; i < length - 1; i++) {
-    for (let j = i + 1; j < length; j++) {
       const sum = numbers[i] + numbers[j];
-      rst[sum] = sum;
+      if (!rst.includes(sum)) {
+        rst.push(sum);
+      }
     }
   }
 
-  const set = new Set(rst);
-  set.delete(undefined);
-  return [...set];
+  return rst.sort((a, b) => a - b);
 }
 
 function solutionOther(args) {
