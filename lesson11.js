@@ -2,36 +2,19 @@
  * 피로도 (완전탐색): https://school.programmers.co.kr/learn/courses/30/lessons/87946
  */
 
-// 랜덤으로 index 배열을 생성
-function makeRdIdxArr(length) {
-  const rds = {};
-  const rst = [];
-  while (rst.length < length) {
-    const rd = Math.floor(Math.random() * length);
-    if (!rds[rd]) {
-      rds[rd] = true;
-      rst.push(rd);
-    }
-  }
-  return rst;
-}
+const getPermutations = function (arr, selectNumber) {
+  const results = [];
+  if (selectNumber === 1) return arr.map((value) => [value]); // 1개씩 택할 때, 바로 모든 배열의 원소 return
 
-// 모든 경우의 수 index 배열을 생성
-function makeAllCaseIndexes(arr) {
-  const arrLen = arr.length;
-  const caseLen = arrLen * (arrLen - 1);
-  const obj = {};
+  arr.forEach((fixed, index, origin) => {
+    const rest = [...origin.slice(0, index), ...origin.slice(index + 1)]; // 해당하는 fixed를 제외한 나머지 배열
+    const permutations = getPermutations(rest, selectNumber - 1); // 나머지에 대해 순열을 구한다.
+    const attached = permutations.map((permutation) => [fixed, ...permutation]); // 돌아온 순열에 대해 떼 놓은(fixed) 값 붙이기
+    results.push(...attached); // 배열 spread syntax 로 모두다 push
+  });
 
-  while (Object.keys(obj).length < caseLen) {
-    const rd = makeRdIdxArr(arrLen);
-    const key = rd.join("");
-    if (!obj[key]) {
-      obj[key] = rd;
-    }
-  }
-
-  return Object.values(obj);
-}
+  return results; // 결과 담긴 results return
+};
 
 // 던전 방문 횟수 계산
 function clacVisitCount(k, dungeons, idxArr) {
@@ -41,10 +24,12 @@ function clacVisitCount(k, dungeons, idxArr) {
     const [needK, useK] = dungeons[idx];
 
     // 던전 진입 가능 ?
-    if (needK <= k) {
+    if (needK <= k && useK <= k) {
       // 피로도 소모
       k -= useK;
-      cnt += 1;
+      cnt++;
+    } else {
+      break;
     }
   }
 
@@ -54,7 +39,7 @@ function clacVisitCount(k, dungeons, idxArr) {
 function solution(k, dungeons) {
   let answer = -1;
 
-  for (const idxArr of makeAllCaseIndexes(dungeons)) {
+  for (const idxArr of getPermutations(dungeons.map((d, i) => i), dungeons.length)) {
     const count = clacVisitCount(k, dungeons, idxArr);
     answer = Math.max(count, answer);
     // 던전을 모두 돌았다면 더 계산할 필요 없음

@@ -46,10 +46,8 @@ function solutionOther(people, limit) {
   while (front <= rear) {
     if (people[front] + people[rear] <= limit) {
       ++front;
-      --rear;
-    } else {
-      --rear;
     }
+    --rear;
     ++answer;
   }
 
@@ -79,7 +77,7 @@ if (require.main === module) {
     {
       people: [40, 40, 50, 50],
       limit: 200,
-      answer: 3
+      answer: 2
     },
     {
       people: [60, 60, 51, 51, 100],
