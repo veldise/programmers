@@ -2,6 +2,7 @@
  * 구명보트 (탐욕법): https://school.programmers.co.kr/learn/courses/30/lessons/42885
  */
 
+// 결과 실패
 function solution(people, limit) {
   people = people.slice(0);
 

@@ -6,6 +6,7 @@ function last(arr) {
   return arr[arr.length - 1];
 }
 
+// 실패 - 미구현
 function solution(n) {
   let answer = [];
 
