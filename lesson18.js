@@ -1,14 +1,23 @@
 /**
- * 카드 뭉치: https://school.programmers.co.kr/learn/courses/30/lessons/159994
+ * 스킬트리: https://school.programmers.co.kr/learn/courses/30/lessons/49993
  */
 
-function solution(cards1, cards2, goal) {
-  var answer = "";
-  return answer;
+function solution(skill, skill_trees) {
+  // skill 비포함 문자를 찾는 정규식 생성
+  const reExclude = new RegExp(`[^${skill}]+`, "g");
+
+  return skill_trees.filter((st) => {
+    // skill 에 포함되지 않은 문자를 모두 제거
+    // ex) BACDE ∩ CBD = BCD, AECB ∩ CBD = CB
+    const excluded = st.replace(reExclude, "");
+    // skill 에 포함 & 시작 여부 검사
+    // ex) CBD.startsWith(BCD) == false, CBD.startsWith(CB) == true
+    return skill.startsWith(excluded);
+  }).length;
 }
 
-function solutionOther(cards1, cards2, goal) {
-  var answer = "";
+function solutionOther(skill, skill_trees) {
+  var answer = -1;
   return answer;
 }
 
@@ -18,22 +27,30 @@ function solutionOther(cards1, cards2, goal) {
 if (require.main === module) {
   const testCases = [
     {
-      cards1: ["i", "drink", "water"],
-      cards2: ["want", "to"],
-      goal: ["i", "want", "to", "drink", "water"],
-      result: "Yes"
+      skill: "CBD",
+      skill_trees: ["BACDE", "CBADF", "AECB", "BDA"],
+      result: 2
     },
     {
-      cards1: ["i", "water", "drink"],
-      cards2: ["want", "to"],
-      goal: ["i", "want", "to", "drink", "water"],
-      result: "No"
+      skill: "CBD",
+      skill_trees: ["BACDE", "CBADF", "AECB", "BDA", "AQWER"],
+      result: 3
+    },
+    {
+      skill: "CBD",
+      skill_trees: ["CBADE", "ADF", "ZYED", "BDA"],
+      result: 1
+    },
+    {
+      skill: "GTA",
+      skill_trees: ["MICRSOFT", "SONY", "NITEDO", "SEGA", "ENIX", "FROM", "CDPR"],
+      result: 4
     }
   ];
 
   const success = testCases.every((tc) => {
-    console.log(solution(tc.cards1, tc.cards2, tc.goal), tc.result);
-    return require("lodash").isEqual(solution(tc.cards1, tc.cards2, tc.goal), tc.result);
+    console.log(solution(tc.skill, tc.skill_trees), tc.result);
+    return require("lodash").isEqual(solution(tc.skill, tc.skill_trees), tc.result);
   });
   console.log(success);
 }
