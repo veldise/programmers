@@ -1,9 +1,37 @@
 /**
  * [3차] 방금그곡: https://school.programmers.co.kr/learn/courses/30/lessons/17683
  */
+function time2minute(time) {
+  const [h, m] = time.split(":");
+  return h * 60 + +m;
+}
+
 function solution(m, musicinfos) {
-  var answer = "";
-  return answer;
+  let foundTitle = null;
+
+  const reSheet = /C#?|D#?|E|F#?|G#?|A#?|B/g;
+  const strRememberSheet = m.match(reSheet).join(",") + ","; // 'AB#C' -> 'A,B#,C,'
+
+  for (const info of musicinfos) {
+    const [sta, eta, title, sheetStr] = info.split(",");
+    const sheet = sheetStr.match(reSheet);
+
+    let playingTime = time2minute(eta) - time2minute(sta);
+    let playingSheet = [];
+    do {
+      const sliced = sheet.slice(0, playingTime);
+      playingSheet = playingSheet.concat(sliced);
+      playingTime -= sliced.length;
+    } while (playingTime > 0);
+
+    const strPlayingSheet = playingSheet.join(",") + ",";
+    if (strPlayingSheet.indexOf(strRememberSheet) !== -1) {
+      foundTitle = title;
+      break;
+    }
+  }
+
+  return foundTitle || "(None)";
 }
 
 function solutionOther(m, musicinfos) {
