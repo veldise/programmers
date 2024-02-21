@@ -17,7 +17,7 @@ function solution(picks, minerals) {
   // 5개씩 분할하며 광물 종류별 개수 세기
   const mineralsCntList = [];
 
-  for (let i = 0; i < minerals.length; i+=5) {
+  for (let i = 0; i < minerals.length; i += 5) {
     const mnrs = minerals.slice(i, i + 5);
 
     const countMap = { diamond: 0, iron: 0, stone: 0 };
@@ -28,7 +28,7 @@ function solution(picks, minerals) {
     mineralsCntList.push(countMap);
   }
 
-  // 광물 종류별 & 개수 순으로 정렬 (피로도 높은 순으로, diamond > iron > stone)
+  // 광물 종류별 & 개수 순으로 역순 정렬 (피로도 높은 순으로, diamond > iron > stone)
   mineralsCntList.sort(function (idxs1, idxs2) {
     return idxs2.diamond - idxs1.diamond || idxs2.iron - idxs1.iron || idxs2.stone - idxs1.stone;
   });
@@ -113,6 +113,89 @@ if (require.main === module) {
       picks: [0, 1, 0],
       minerals: ["diamond", "iron", "iron", "iron", "iron", "diamond", "diamond", "iron", "iron", "iron"],
       result: 9
+    },
+    {
+      picks: [1, 1, 0],
+      minerals: ["stone", "stone", "iron", "stone", "diamond", "diamond", "diamond", "diamond", "diamond", "diamond"],
+      result: 14
+    },
+    {
+      picks: [1, 1, 1],
+      minerals: [
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "iron",
+        "iron",
+        "iron",
+        "iron",
+        "iron",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond"
+      ],
+      result: 55
+    },
+    { picks: [1, 0, 1], minerals: ["iron", "iron", "iron", "iron", "diamond", "diamond", "diamond"], result: 47 },
+    {
+      picks: [5, 5, 5],
+      minerals: [
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond",
+        "diamond"
+      ],
+      result: 150
     }
   ];
 
