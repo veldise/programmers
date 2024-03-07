@@ -124,7 +124,7 @@ if (require.main === module) {
 
   const clone = function (obj) {
     return JSON.parse(JSON.stringify(obj));
-  }
+  };
 
   const success = testCases.every((tc) => {
     console.log(solution(clone(tc.maps)), tc.answer);
