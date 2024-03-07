@@ -1,96 +1,83 @@
 /**
- * 하노이의 탑: https://school.programmers.co.kr/learn/courses/30/lessons/12946
+ * 이모티콘 할인행사: https://school.programmers.co.kr/learn/courses/30/lessons/150368
+ * 각 이모티콘별 최적 할인율 구하기 ?
+ *
  */
 
-function last(arr) {
-  return arr[arr.length - 1];
+// SEE: https://velog.io/@proshy/JS순열조합중복순열-구하기
+function permutation(arr, selectNum) {
+  const result = [];
+  if (selectNum === 1) return arr.map((v) => [v]);
+
+  arr.forEach((v, idx, arr) => {
+    const fixed = v;
+    const restArr = arr;
+    const permutationArr = permutation(restArr, selectNum - 1);
+    const combineFix = permutationArr.map((v) => [fixed, ...v]);
+    result.push(...combineFix);
+  });
+  return result;
 }
 
-// 실패 - 미구현
-function solution(n) {
-  let answer = [];
+function calcResult(users, prices) {
+  let cntJoin = 0; // 서비스 가입 수
+  let sumAmount = 0; // 매출액
 
-  const towers = [];
+  for (const [uRate, uPrice] of users) {
+    let purchased = 0;
 
-  // 기둥은 3개
-  for (let i = 0; i < 3; i++) {
-    towers.push([]);
-  }
-  // 첫번째 기둥에 원반 준비
-  for (let i = n; i > 0; i--) {
-    towers[0].push(i);
-  }
+    for (const [pRate, pPrice] of prices) {
+      if (uRate <= pRate) {
+        // NOTE: emoticon 가격은 100의 배수이므로 100으로 먼저 나누어 부동소수점 발생 방지
+        // x * (1-0.4) = (x/100 * (100-40)/100) * 100 = x/100 * (100-40)
+        let discounted = (pPrice / 100) * (100 - pRate); // 할인된 emoticon 가격
+        purchased += discounted;
 
-  function movable(from, to) {
-    return !to.length || last(from) < last(to);
-  }
-  function move(from, to) {
-    to.push(from.pop());
-    answer.push([towers.indexOf(from) + 1, towers.indexOf(to) + 1]);
-    console.log(last(answer));
-  }
-  function findTowerBy(n) {
-    return towers.find((tower) => last(tower) === n);
-  }
-
-  let from = towers[0];
-  let via = towers[1];
-  let to = towers[2];
-
-  let cnt = 0;
-
-  let currN = n;
-
-  while (1) {
-    if (cnt++ > 10) {
-      break;
-    }
-
-    if (last(from) === currN && movable(from, to)) {
-      move(from, to);
-    } else {
-      if (movable(from, via)) {
-        move(from, via);
+        // 구매 비용이 기준 이상이면
+        if (purchased >= uPrice) {
+          purchased = 0; // 구매 모두 취소
+          cntJoin += 1; // 서비스 가입
+          break;
+        }
       }
     }
 
-    if (currN === 1) {
-      currN = n;
-
-      from = towers[0];
-      via = towers[1];
-      to = towers[2];
-    } else {
-      currN -= 1;
-
-      let fromA = from;
-      let viaA = via;
-      let toA = to;
-
-      from = toA;
-      via = fromA;
-      to = viaA;
-    }
+    sumAmount += purchased;
   }
 
-  return answer;
+  return [cntJoin, sumAmount];
 }
 
-// SEE: https://nyang-in.tistory.com/210
-function solutionOther(n) {
-  let answer = [];
+function solution(users, emoticons) {
+  // 할인율은 10/20/30/40% 중 하나
+  const discountRates = [10, 20, 30, 40];
+  const allCaseRates = permutation(discountRates, emoticons.length);
 
-  function hanoi(n, from, to, via) {
-    if (n === 1) {
-      answer.push([from, to]);
-    } else {
-      hanoi(n - 1, from, via, to);
-      answer.push([from, to]);
-      hanoi(n - 1, via, to, from);
+  const results = [];
+  // let answer = null;
+
+  for (const caseRates of allCaseRates) {
+    const pairs = [];
+    for (let i = 0; i < emoticons.length; i++) {
+      pairs.push([caseRates[i], emoticons[i]]);
     }
+
+    // 서비스 가입 수 우선, 매출액은 그 다음
+    // const result = calcResult(users, pairs);
+    // if (!answer || result[0] > answer[0] || (result[0] === answer[0] && result[1] >= answer[1])) {
+    //   answer = result;
+    // }
+    results.push(calcResult(users, pairs));
   }
 
-  hanoi(n, 1, 3, 2);
+  // 0, 1 순서로 내림차순 정렬
+  return results.sort((a, b) => {
+    return b[0] - a[0] || b[1] - a[1];
+  })[0]; // 가장 큰 값
+}
+
+function solutionOther(users, emoticons) {
+  var answer = [];
   return answer;
 }
 
@@ -99,37 +86,32 @@ function solutionOther(n) {
  */
 if (require.main === module) {
   const testCases = [
-    // {
-    //   n: 1,
-    //   result: [
-    //     [1, 3]
-    //   ]
-    // },
     {
-      n: 2,
-      result: [
-        [1, 2],
-        [1, 3],
-        [2, 3]
-      ]
+      users: [
+        [40, 10000],
+        [25, 10000]
+      ],
+      emoticons: [7000, 9000],
+      result: [1, 5400]
     },
     {
-      n: 3,
-      result: [
-        [1, 3],
-        [1, 2],
-        [3, 2],
-        [1, 3],
-        [2, 1],
-        [2, 3],
-        [1, 3]
-      ]
+      users: [
+        [40, 2900],
+        [23, 10000],
+        [11, 5200],
+        [5, 5900],
+        [40, 3100],
+        [27, 9200],
+        [32, 6900]
+      ],
+      emoticons: [1300, 1500, 1600, 4900],
+      result: [4, 13860]
     }
   ];
 
   const success = testCases.every((tc) => {
-    console.log(solution(tc.n), tc.result);
-    return require("lodash").isEqual(solution(tc.n), tc.result);
+    console.log(solution(tc.users, tc.emoticons), tc.result);
+    return require("lodash").isEqual(solution(tc.users, tc.emoticons), tc.result);
   });
   console.log(success);
 }
