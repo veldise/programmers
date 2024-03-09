@@ -2,16 +2,12 @@
  * 삼각 달팽이: https://school.programmers.co.kr/learn/courses/30/lessons/68645
  */
 function solution(n) {
-  const snail = [];
-  while (snail.length < n) {
-    // snail.unshift(Array(n - snail.length).fill(0));
-    snail.push([]);
-  }
+  const snail = Array(n)
+    .fill()
+    .map(() => []);
 
-  let [x, y] = [0, 0]; // 시작 위치
   let num = 1; // 시작 숫자
-  let dir = "d"; // 시작 방향
-  let len = n;
+  let [y, x, dir, len] = [0, 0, "d", n];
 
   while (len) {
     switch (dir) {
@@ -35,10 +31,11 @@ function solution(n) {
         break;
     }
   }
-  console.log("snail:", require("json-stringify-pretty-compact")(snail, { maxLength: 30 }));
 
-  // flatten
-  return snail.reduce((arr, cur) => arr.concat(cur), []);
+  console.table(snail);
+
+  // return snail.reduce((arr, cur) => arr.concat(cur), []);
+  return snail.flat();
 }
 
 /**
@@ -52,6 +49,27 @@ if (require.main === module) {
     {
       n: 7,
       result: [1, 2, 18, 3, 19, 17, 4, 20, 27, 16, 5, 21, 28, 26, 15, 6, 22, 23, 24, 25, 14, 7, 8, 9, 10, 11, 12, 13]
+    },
+    {
+      n: 8,
+      result: [
+        1, 2, 21, 3, 22, 20, 4, 23, 33, 19, 5, 24, 34, 32, 18, 6, 25, 35, 36, 31, 17, 7, 26, 27, 28, 29, 30, 16, 8, 9,
+        10, 11, 12, 13, 14, 15
+      ]
+    },
+    {
+      n: 9,
+      result: [
+        1, 2, 24, 3, 25, 23, 4, 26, 39, 22, 5, 27, 40, 38, 21, 6, 28, 41, 45, 37, 20, 7, 29, 42, 43, 44, 36, 19, 8, 30,
+        31, 32, 33, 34, 35, 18, 9, 10, 11, 12, 13, 14, 15, 16, 17
+      ]
+    },
+    {
+      n: 10,
+      result: [
+        1, 2, 27, 3, 28, 26, 4, 29, 45, 25, 5, 30, 46, 44, 24, 6, 31, 47, 54, 43, 23, 7, 32, 48, 55, 53, 42, 22, 8, 33,
+        49, 50, 51, 52, 41, 21, 9, 34, 35, 36, 37, 38, 39, 40, 20, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
+      ]
     }
   ];
 
