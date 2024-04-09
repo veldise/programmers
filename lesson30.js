@@ -3,26 +3,31 @@
  */
 
 function solution(bridge_length, weight, truck_weights) {
-  let curWeight = 0;
-  let curLength = 0;
+  let cur_weight = 0;
+  let cur_length = 0;
   let sec = 0;
 
   while (truck_weights.length) {
+    // 트럭을 순서대로 선택
     const truck_weight = truck_weights.shift();
-    if (curWeight + truck_weight <= weight && curLength < bridge_length) {
-      curWeight += truck_weight;
-      curLength += 1;
-      sec += 1; // 트럭이 다리에 올라가는데 (1초) 소요
+    if (cur_weight + truck_weight <= weight && cur_length < bridge_length) {
+      // 다리에 여유가 있는 경우
+      // 트럭이 다리에 올라가는데 (1초) 소요
+      sec += 1;
+      // 트럭을 다리 위에 올리기
+      cur_weight += truck_weight;
+      cur_length += 1;
     } else {
-      curWeight = 0;
-      curLength = 0;
-      sec += bridge_length - 1; // 다리에 올라간 모든 트럭이 통과하는데 (다리 길이 - 1초) 소요
-      truck_weights.unshift(truck_weight);
+      // 다리에 여유가 없는 경우
+      // 다리에 올라간 모든 트럭이 통과하는데 다리 길이만큼 소요
+      sec += bridge_length;
+      // 다음 트럭을 다리 위에 올리기
+      cur_weight = truck_weight;
+      cur_length = 1;
     }
   }
-  if (curLength) {
-    sec += bridge_length;
-  }
+  // 아직 다리에 남아있는 트럭을 통과시키기
+  sec += bridge_length;
 
   return sec;
 }
@@ -37,20 +42,39 @@ if (require.main === module) {
     { bridge_length: 100, weight: 100, truck_weights: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10], answer: 110 },
     { bridge_length: 1, weight: 10, truck_weights: [7, 4, 5, 6], answer: 5 },
     { bridge_length: 3, weight: 10, truck_weights: [7, 4, 5, 6], answer: 11 },
-
-    // 경과 시간	다리를 지난 트럭	다리를 건너는 트럭	대기 트럭
-    // 0	[]				[-,-,-]	[7,4,5,6]
-    // 1	[]				[-,-,7]	[4,5,6]
-    // 2	[]				[-,7,-]	[4,5,6]
-    // 3	[]				[7,-,-]	[4,5,6]
-    // 4	[7]				[-,-,4]	[5,6]
-    // 5	[7]				[-,4,5]	[6]
-    // 6	[7]				[4,5,-]	[6]
-    // 7	[7,4]			[5,-,-]	[6]
-    // 8	[7,4,5]		[-,-,6]	[]
-    // 9	[7,4,5]		[-,6,-]	[]
-    // 10	[7,4,5]		[6,-,-]	[]
-    // 11	[7,4,5,6]	[-,-,-]	[]
+    //  0  []         [-,-,-]  [7,4,5,6]
+    //  1  []         [-,-,7]  [4,5,6]
+    //  2  []         [-,7,-]  [4,5,6]
+    //  3  []         [7,-,-]  [4,5,6]
+    //  4  [7]        [-,-,4]  [5,6]
+    //  5  [7]        [-,4,5]  [6]
+    //  6  [7]        [4,5,-]  [6]
+    //  7  [7,4]      [5,-,-]  [6]
+    //  8  [7,4,5]    [-,-,6]  []
+    //  9  [7,4,5]    [-,6,-]  []
+    // 10  [7,4,5]    [6,-,-]  []
+    // 11  [7,4,5,6]  [-,-,-]  []
+    { bridge_length: 4, weight: 10, truck_weights: [1, 1, 1, 1], answer: 8 },
+    // 0  []         [-,-,-,-]  [1,1,1,1]
+    // 1  []         [-,-,-,1]  [1,1,1]
+    // 2  []         [-,-,1,1]  [1,1]
+    // 3  []         [-,1,1,1]  [1]
+    // 4  []         [1,1,1,1]  []
+    // 5  [1]        [1,1,1,-]  []
+    // 6  [1,1]      [1,1,-,-]  []
+    // 7  [1,1,1]    [1,-,-,-]  []
+    // 8  [1,1,1,1]  [-,-,-,-]  []
+    { bridge_length: 3, weight: 9, truck_weights: [9, 1, 9, 1], answer: 13 },
+    { bridge_length: 2, weight: 10, truck_weights: [9, 8, 5, 5], answer: 8 },
+    // 0  []         [-,-]  [9,8,5,5]
+    // 1  []         [-,9]  [8,5,5]
+    // 2  []         [9,-]  [8,5,5]
+    // 3  [9]        [-,8]  [5,5]
+    // 4  [9]        [8,-]  [5,5]
+    // 5  [9,8]      [-,5]  [5]
+    // 6  [9,8]      [5,5]  []
+    // 7  [9,8,5]    [5,-]  []
+    // 8  [9,8,5,5]  [-,-]  []
   ];
 
   testCases.forEach((tc) => {
