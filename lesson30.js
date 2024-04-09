@@ -75,6 +75,16 @@ if (require.main === module) {
     // 6  [9,8]      [5,5]  []
     // 7  [9,8,5]    [5,-]  []
     // 8  [9,8,5,5]  [-,-]  []
+    { bridge_length: 11, weight: 10, truck_weights: [1], answer: 12 },
+    { bridge_length: 10, weight: 100, truck_weights: [50, 30, 10, 10, 30, 10, 40], answer: 23 },
+    { bridge_length: 10, weight: 12, truck_weights: [4, 4, 4, 2, 2, 1, 1, 1, 1], answer: 26 },
+    { bridge_length: 10, weight: 12, truck_weights: [1, 1, 1, 1, 2, 2, 4, 4, 4], answer: 26 },
+    { bridge_length: 5, weight: 5, truck_weights: [2, 2, 2, 2, 1, 1, 1, 1, 1], answer: 19 },
+    { bridge_length: 1, weight: 2, truck_weights: [1, 1, 1], answer: 4 },
+    { bridge_length: 1, weight: 1, truck_weights: [1, 1, 1], answer: 4 },
+    { bridge_length: 4, weight: 2, truck_weights: [1, 1, 1, 1], answer: 10 },
+    { bridge_length: 5, weight: 5, truck_weights: [1, 1, 1, 1, 1, 2, 2], answer: 14 },
+    { bridge_length: 7, weight: 7, truck_weights: [1, 1, 1, 1, 1, 3, 3], answer: 18 }
   ];
 
   testCases.forEach((tc) => {
