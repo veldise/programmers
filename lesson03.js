@@ -119,31 +119,27 @@ function solutionOther(a, b, c, d) {
  */
 if (require.main === module) {
   const testCases = [
-    [2, 2, 2, 2],
-    [4, 1, 4, 4],
-    [6, 3, 3, 6],
-    [2, 5, 2, 6],
-    [6, 4, 2, 5]
-
-    // [5, 5, 5, 5],
-    // [2, 2, 5, 2],
-    // [2, 1, 2, 1],
-    // [1, 4, 3, 4],
-    // [3, 6, 4, 5]
+    { abcd: [2, 2, 2, 2], answer: 2222 },
+    { abcd: [4, 1, 4, 4], answer: 1681 },
+    { abcd: [6, 3, 3, 6], answer: 27 },
+    { abcd: [2, 5, 2, 6], answer: 30 },
+    { abcd: [6, 4, 2, 5], answer: 2 },
+    { abcd: [5, 5, 5, 5], answer: 5555 },
+    { abcd: [2, 2, 5, 2], answer: 625 },
+    { abcd: [2, 1, 2, 1], answer: 3 },
+    { abcd: [1, 4, 3, 4], answer: 3 },
+    { abcd: [3, 6, 4, 5], answer: 3 }
   ];
-  const results = [2222, 1681, 27, 30, 2 /* , 5555, 625, 3, 3, 3 */];
 
-  const success = testCases.every(function (arrCase, index) {
-    console.log(arrCase, solution.apply(this, arrCase), results[index]);
-    return solution.apply(this, arrCase) === results[index];
+  testCases.forEach(function (tc) {
+    const answer = solution.apply(this, tc.abcd);
+    console.log(answer, tc.answer, require("lodash").isEqual(answer, tc.answer));
   });
-  console.log(success);
 
-  const success2 = testCases.every(function (arrCase, index) {
-    console.log(arrCase, solution2.apply(this, arrCase), results[index]);
-    return solution2.apply(this, arrCase) === results[index];
+  testCases.forEach(function (tc) {
+    const answer = solution2.apply(this, tc.abcd);
+    console.log(answer, tc.answer, require("lodash").isEqual(answer, tc.answer));
   });
-  console.log(success2);
 }
 
 // N 번째 홀수의 합 : (1) + (1+2^1) + (1+2^2) + ... + (1+2^(N-1)) = N * N
