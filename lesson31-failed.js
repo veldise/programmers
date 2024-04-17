@@ -20,7 +20,7 @@ function solution(scores) {
       // 인센티브 못받는 사원 제외
       return !someLtBoth(s);
     })
-    // 두 점수의 합으로 변경
+    // 두 점수의 합으로 석차를 결정
     .map((s) => s[0] + s[1])
     .sort((sa, sb) => {
       // 두 점수의 합으로 내림차순 정렬
