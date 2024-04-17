@@ -1,7 +1,8 @@
 /**
  * Lv3: [인사고과](https://school.programmers.co.kr/learn/courses/30/lessons/152995)
- * 인센티브 석차 구하기
- *
+ * 테스트 21 > 실패 (시간 초과)
+ * 테스트 24 > 실패 (시간 초과)
+ * 테스트 25 > 실패 (시간 초과)
  */
 
 function solution(scores) {
