@@ -3,8 +3,7 @@
  */
 
 function solution(myString) {
-  var answer = [];
-  return answer;
+  return myString.split("x").map((s) => s.length);
 }
 
 /**
@@ -17,9 +16,9 @@ if (require.main === module) {
   ];
 
   const success = testCases.every((tc) => {
-    const answer = solution(tc.routes);
-    console.log(answer, tc.result);
-    return require("lodash").isEqual(answer, tc.result);
+    const answer = solution(tc.myString);
+    console.log(answer, tc.answer);
+    return require("lodash").isEqual(answer, tc.answer);
   });
   console.log(success);
 }
