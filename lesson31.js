@@ -10,23 +10,25 @@ function solution(scores) {
   }
 
   // 완호가 인센티브 못 받음
+  const wanho = scores[0];
   if (someLtBoth(scores[0])) {
     return -1;
   }
 
   const sorted = scores
-    .slice(0)
     .filter((s) => {
       // 인센티브 못받는 사원 제외
       return !someLtBoth(s);
     })
+    // 두 점수의 합으로 변경
+    .map((s) => s[0] + s[1])
     .sort((sa, sb) => {
       // 두 점수의 합으로 내림차순 정렬
-      return sb[0] - sa[0] + sb[1] - sa[1];
+      return sb - sa;
     });
 
   // 석차이므로 +1
-  return sorted.indexOf(scores[0]) + 1;
+  return sorted.indexOf(wanho[0] + wanho[1]) + 1;
 }
 
 /**
