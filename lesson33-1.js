@@ -34,8 +34,6 @@ function solution(tickets) {
         stopover.pop();
       }
     }
-
-    return paths;
   }
 
   // 시작 위치는 ICN
@@ -51,45 +49,149 @@ function solution(tickets) {
 if (require.main === module) {
   const testCases = [
     {
-      tickets: [["ICN", "JFK"], ["HND", "IAD"], ["JFK", "HND"]],
+      tickets: [
+        ["ICN", "JFK"],
+        ["HND", "IAD"],
+        ["JFK", "HND"]
+      ],
       answer: ["ICN", "JFK", "HND", "IAD"]
     },
     {
-      tickets: [["ICN", "SFO"], ["ICN", "ATL"], ["SFO", "ATL"], ["ATL", "ICN"], ["ATL", "SFO"]],
+      tickets: [
+        ["ICN", "SFO"],
+        ["ICN", "ATL"],
+        ["SFO", "ATL"],
+        ["ATL", "ICN"],
+        ["ATL", "SFO"]
+      ],
       answer: ["ICN", "ATL", "ICN", "SFO", "ATL", "SFO"]
     },
     {
-      tickets: [["ICN", "BOO"], ["BOO", "COO"], ["COO", "ICN"], ["ICN", "BOO"], ["BOO", "COO"], ["COO", "ICN"]],
+      tickets: [
+        ["ICN", "BOO"],
+        ["BOO", "COO"],
+        ["COO", "ICN"],
+        ["ICN", "BOO"],
+        ["BOO", "COO"],
+        ["COO", "ICN"]
+      ],
       answer: ["ICN", "BOO", "COO", "ICN", "BOO", "COO", "ICN"]
     },
     {
-      tickets: [["ICN", "SFO"], ["ICN", "ATL"], ["SFO", "ATL"], ["ATL", "ICN"], ["ATL", "SFO"]],
+      tickets: [
+        ["ICN", "SFO"],
+        ["ICN", "ATL"],
+        ["SFO", "ATL"],
+        ["ATL", "ICN"],
+        ["ATL", "SFO"]
+      ],
       answer: ["ICN", "ATL", "ICN", "SFO", "ATL", "SFO"]
     },
     {
-      tickets: [["ICN", "AAA"], ["ICN", "BBB"], ["BBB", "CCC"], ["AAA", "DDD"], ["DDD", "EEE"], ["CCC", "ICN"]],
+      tickets: [
+        ["ICN", "AAA"],
+        ["ICN", "BBB"],
+        ["BBB", "CCC"],
+        ["AAA", "DDD"],
+        ["DDD", "EEE"],
+        ["CCC", "ICN"]
+      ],
       answer: ["ICN", "BBB", "CCC", "ICN", "AAA", "DDD", "EEE"]
     },
-    { // 테스트 3
-      tickets: [["ICN", "AAA"], ["ICN", "AAA"], ["ICN", "AAA"], ["AAA", "ICN"], ["AAA", "ICN"]],
+    {
+      // 테스트 3
+      tickets: [
+        ["ICN", "AAA"],
+        ["ICN", "AAA"],
+        ["ICN", "AAA"],
+        ["AAA", "ICN"],
+        ["AAA", "ICN"]
+      ],
       answer: ["ICN", "AAA", "ICN", "AAA", "ICN", "AAA"]
     },
-    { // 테스트 4
-      tickets: [["ICN", "AOO"], ["ICN", "AOO"], ["AOO", "ICN"], ["AOO", "COO"]],
+    {
+      // 테스트 4
+      tickets: [
+        ["ICN", "AOO"],
+        ["ICN", "AOO"],
+        ["AOO", "ICN"],
+        ["AOO", "COO"]
+      ],
       answer: ["ICN", "AOO", "ICN", "AOO", "COO"]
     },
-    { // 테스트 6
-      tickets: [["ICN", "BOO"], ["ICN", "COO"], ["COO", "DOO"], ["DOO", "COO"], ["BOO", "DOO"], ["DOO", "BOO"], ["BOO", "ICN"], ["COO", "BOO"]],
+    {
+      // 테스트 6
+      tickets: [
+        ["ICN", "BOO"],
+        ["ICN", "COO"],
+        ["COO", "DOO"],
+        ["DOO", "COO"],
+        ["BOO", "DOO"],
+        ["DOO", "BOO"],
+        ["BOO", "ICN"],
+        ["COO", "BOO"]
+      ],
       answer: ["ICN", "BOO", "DOO", "BOO", "ICN", "COO", "DOO", "COO", "BOO"]
     },
-    { // 테스트 7
-      tickets: [["ICN", "AOO"], ["AOO", "BOO"], ["AOO", "COO"], ["COO", "AOO"], ["BOO", "ZOO"]],
+    {
+      // 테스트 7
+      tickets: [
+        ["ICN", "AOO"],
+        ["AOO", "BOO"],
+        ["AOO", "COO"],
+        ["COO", "AOO"],
+        ["BOO", "ZOO"]
+      ],
       answer: ["ICN", "AOO", "COO", "AOO", "BOO", "ZOO"]
     },
-    { // 테스트 8
-      tickets: [["ICN", "AOO"], ["AOO", "BOO"], ["AOO", "BOO"], ["BOO", "AOO"], ["BOO", "FOO"], ["FOO", "COO"], ["COO", "ZOO"]],
+    {
+      // 테스트 8
+      tickets: [
+        ["ICN", "AOO"],
+        ["AOO", "BOO"],
+        ["AOO", "BOO"],
+        ["BOO", "AOO"],
+        ["BOO", "FOO"],
+        ["FOO", "COO"],
+        ["COO", "ZOO"]
+      ],
       answer: ["ICN", "AOO", "BOO", "AOO", "BOO", "FOO", "COO", "ZOO"]
     },
+    {
+      tickets: [
+        ["ICN", "IAD"],
+        ["ICN", "JFK"],
+        ["JFK", "ICN"]
+      ],
+      answer: ["ICN", "JFK", "ICN", "IAD"]
+    },
+    {
+      tickets: [
+        ["ICN", "D"],
+        ["D", "ICN"],
+        ["ICN", "B"]
+      ],
+      answer: ["ICN", "D", "ICN", "B"]
+    },
+    {
+      tickets: [
+        ["ICN", "AAA"],
+        ["ICN", "AAA"],
+        ["ICN", "AAA"],
+        ["AAA", "ICN"],
+        ["AAA", "ICN"]
+      ],
+      answer: ["ICN", "AAA", "ICN", "AAA", "ICN", "AAA"]
+    },
+    {
+      tickets: [
+        ["ICN", "AAA"],
+        ["ICN", "AAA"],
+        ["AAA", "ICN"],
+        ["AAA", "ICN"]
+      ],
+      answer: ["ICN", "AAA", "ICN", "AAA", "ICN"]
+    }
   ];
 
   testCases.forEach((tc) => {
