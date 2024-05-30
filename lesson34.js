@@ -1,5 +1,6 @@
 /**
  * [디펜스 게임](https://school.programmers.co.kr/learn/courses/30/lessons/142085)
+ * 실패
  */
 
 function solution(n, k, enemy) {
