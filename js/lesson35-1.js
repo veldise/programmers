@@ -5,26 +5,33 @@
 
 function solution(N, stages) {
   const stageMap = {};
-  const clearMap = {};
+  const clearedMap = {};
   for (const stage of stages) {
     for (let i = 1; i <= stage; i++) {
+      // 특정 스테이지에 도달한 수 집계
       if (i <= N) {
         stageMap[i] = (stageMap[i] || 0) + 1;
       }
+      // 특정 스테이지를 클리어한 수 집계
       if (i > 1) {
-        clearMap[i - 1] = (clearMap[i - 1] || 0) + 1;
+        clearedMap[i - 1] = (clearedMap[i - 1] || 0) + 1;
       }
     }
   }
 
+  // 실패율 계산
   const failRateMap = {};
   for (let i = 1; i <= N; i++) {
-    failRateMap[i] = (stageMap[i] - (clearMap[i] || 0)) / stageMap[i];
+    failRateMap[i] = stageMap[i] ? (stageMap[i] - (clearedMap[i] || 0)) / stageMap[i] : 0;
   }
 
-  return Object.entries(failRateMap)
-    .sort((a, b) => b[1] - a[1])
-    .map((a) => +a[0]);
+  return (
+    Object.entries(failRateMap)
+      // 값(실패율) 기준으로 정렬
+      .sort((a, b) => b[1] - a[1])
+      // 키(스테이지)를 배열로 변환
+      .map((a) => +a[0])
+  );
 }
 
 /**
