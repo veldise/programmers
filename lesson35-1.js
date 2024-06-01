@@ -33,13 +33,23 @@ function solution(N, stages) {
 if (require.main === module) {
   const testCases = [
     { N: 5, stages: [2, 1, 2, 6, 2, 4, 3, 3], answer: [3, 4, 2, 1, 5] },
-    { N: 4, stages: [4, 4, 4, 4, 4], answer: [4, 1, 2, 3] }
+    { N: 4, stages: [4, 4, 4, 4, 4], answer: [4, 1, 2, 3] },
+    { N: 5, stages: [1, 1, 1, 2, 3, 4], answer: [4, 1, 3, 2, 5] },
+    { N: 6, stages: [2, 2, 2, 2, 2, 2, 2, 2, 2], answer: [2, 1, 3, 4, 5, 6] },
+    { N: 2, stages: [3], answer: [1, 2] },
+    { N: 4, stages: [4, 4, 4, 4, 4], answer: [4, 1, 2, 3] },
+    { N: 5, stages: [3, 2, 1, 1], answer: [3, 1, 2, 4, 5] },
+    { N: 10, stages: [10, 2], answer: [10, 2, 1, 3, 4, 5, 6, 7, 8, 9] },
+    { N: 5, stages: [2, 4], answer: [4, 2, 1, 3, 5] },
+    { N: 5, stages: [3, 3, 3, 3, 3], answer: [3, 1, 2, 4, 5] },
+    { N: 3, stages: [1, 1, 2, 2], answer: [2, 1, 3] },
+    { N: 2, stages: [1, 1, 1, 1], answer: [1, 2] }
   ];
 
   testCases.forEach((tc) => {
     const answer = solution(tc.N, tc.stages);
     console.log(require("lodash").isEqual(answer, tc.answer) + "");
-    console.table([answer, tc.answer]);
+    // console.table([answer, tc.answer]);
   });
 }
 
